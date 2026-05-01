@@ -28,7 +28,20 @@ dbutils.widgets.text(
     "/Workspace/Users/amonterove@gmail.com/NimbleGravityChallenge",
 )
 dbutils.widgets.text("prompt_filename", "judge_v1.yaml")
-dbutils.widgets.text("mlflow_experiment", "/Shared/nimble_challenge/llm_judge")
+
+# Default the MLflow experiment path under the running user's workspace home
+# so it works in Free Edition (which restricts /Shared paths) without setup.
+_current_user = (
+    dbutils.notebook.entry_point.getDbutils()
+    .notebook()
+    .getContext()
+    .userName()
+    .get()
+)
+dbutils.widgets.text(
+    "mlflow_experiment",
+    f"/Users/{_current_user}/nimble_challenge/llm_judge",
+)
 
 repo_root = dbutils.widgets.get("repo_root")
 sys.path.insert(0, f"{repo_root}/src")
