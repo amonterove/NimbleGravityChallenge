@@ -1,0 +1,58 @@
+resources:
+  jobs:
+    nimble_pipeline:
+      name: nimble_pipeline_${bundle.target}
+      description: Medallion + LLM pipeline for the electronics dataset.
+
+      tasks:
+        - task_key: bronze_ingest
+          notebook_task:
+            notebook_path: ../../notebooks/01_bronze_ingest.py
+            base_parameters:
+              catalog: ${var.catalog}
+              source_path: ${var.source_path}
+
+        - task_key: silver_standardize
+          depends_on:
+            - task_key: bronze_ingest
+          notebook_task:
+            notebook_path: ../../notebooks/02_silver_standardize.py
+            base_parameters:
+              catalog: ${var.catalog}
+
+        - task_key: silver_llm_extract
+          depends_on:
+            - task_key: silver_standardize
+          notebook_task:
+            notebook_path: ../../notebooks/03_silver_llm_extract.py
+            base_parameters:
+              catalog: ${var.catalog}
+              prompt_path: ${workspace.file_path}/prompts/extract_v1.yaml
+
+        - task_key: silver_llm_judge
+          depends_on:
+            - task_key: silver_llm_extract
+          notebook_task:
+            notebook_path: ../../notebooks/04_silver_llm_judge.py
+            base_parameters:
+              catalog: ${var.catalog}
+              prompt_path: ${workspace.file_path}/prompts/judge_v1.yaml
+
+        - task_key: silver_taxonomy
+          depends_on:
+            - task_key: silver_llm_judge
+          notebook_task:
+            notebook_path: ../../notebooks/05_silver_taxonomy.py
+            base_parameters:
+              catalog: ${var.catalog}
+
+        - task_key: gold_aggregate
+          depends_on:
+            - task_key: silver_taxonomy
+          notebook_task:
+            notebook_path: ../../notebooks/06_gold_aggregate.py
+            base_parameters:
+              catalog: ${var.catalog}
+
+      queue:
+        enabled: true

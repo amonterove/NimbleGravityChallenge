@@ -1,0 +1,30 @@
+bundle:
+  name: nimble_challenge
+
+include:
+  - resources/jobs/*.yml
+
+variables:
+  catalog:
+    description: Unity Catalog name for the pipeline tables.
+    default: nimble_challenge
+  source_path:
+    description: Volume path to the source Excel file.
+    default: /Volumes/nimble_challenge/raw/files/electronics_dataset.xlsx
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: ${workspace.host}
+    variables:
+      catalog: nimble_challenge_dev
+
+  prod:
+    mode: production
+    workspace:
+      host: ${workspace.host}
+      root_path: /Workspace/Shared/nimble_challenge
+    variables:
+      catalog: nimble_challenge
