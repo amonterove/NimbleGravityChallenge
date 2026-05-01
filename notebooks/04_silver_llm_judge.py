@@ -28,6 +28,7 @@ dbutils.widgets.text(
     "/Workspace/Users/amonterove@gmail.com/NimbleGravityChallenge",
 )
 dbutils.widgets.text("prompt_filename", "judge_v1.yaml")
+dbutils.widgets.text("model_name", "databricks-meta-llama-3-1-70b-instruct")
 
 # Default the MLflow experiment path under the running user's workspace home
 # so it works in Free Edition (which restricts /Shared paths) without setup.
@@ -69,7 +70,11 @@ if host and not host.startswith("http"):
     host = f"https://{host}"
 token = dbutils.notebook.entry_point.getDbutils().notebook().getContext().apiToken().get()
 
-client = LLMClient(base_url=f"{host}/serving-endpoints", api_key=token)
+client = LLMClient(
+    model=dbutils.widgets.get("model_name"),
+    base_url=f"{host}/serving-endpoints",
+    api_key=token,
+)
 
 # COMMAND ----------
 # MAGIC %md
