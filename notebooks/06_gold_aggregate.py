@@ -10,16 +10,30 @@
 # MAGIC we map deterministically via `SUB_CATEGORY_TO_CATEGORY`).
 
 # COMMAND ----------
-import os
+# MAGIC %md
+# MAGIC ## Parameters and module path setup
 
+# COMMAND ----------
+import os
+import sys
+
+dbutils.widgets.text("catalog", "nimble_challenge")
+dbutils.widgets.text(
+    "repo_root",
+    "/Workspace/Users/amonterove@gmail.com/NimbleGravityChallenge",
+)
+
+repo_root = dbutils.widgets.get("repo_root")
+sys.path.insert(0, f"{repo_root}/src")
+
+os.environ["NIMBLE_CATALOG"] = dbutils.widgets.get("catalog")
+
+# COMMAND ----------
 from pyspark.sql import functions as F
 from pyspark.sql.types import StringType
 
 from nimble_pipeline.config import SUB_CATEGORY_TO_CATEGORY, default_config
 
-# COMMAND ----------
-dbutils.widgets.text("catalog", "nimble_challenge")
-os.environ["NIMBLE_CATALOG"] = dbutils.widgets.get("catalog")
 cfg = default_config()
 
 # COMMAND ----------

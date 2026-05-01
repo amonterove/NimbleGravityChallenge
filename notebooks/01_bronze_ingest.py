@@ -13,6 +13,27 @@
 # MAGIC %restart_python
 
 # COMMAND ----------
+# MAGIC %md
+# MAGIC ## Parameters and module path setup
+
+# COMMAND ----------
+import os
+import sys
+
+dbutils.widgets.text("source_path", "/Volumes/nimble_challenge/raw/files/electronics_dataset.xlsx")
+dbutils.widgets.text("catalog", "nimble_challenge")
+dbutils.widgets.text(
+    "repo_root",
+    "/Workspace/Users/amonterove@gmail.com/NimbleGravityChallenge",
+)
+
+repo_root = dbutils.widgets.get("repo_root")
+sys.path.insert(0, f"{repo_root}/src")
+
+source_path = dbutils.widgets.get("source_path")
+os.environ["NIMBLE_CATALOG"] = dbutils.widgets.get("catalog")
+
+# COMMAND ----------
 import datetime as dt
 
 import pandas as pd
@@ -21,17 +42,6 @@ from pyspark.sql import functions as F
 
 from nimble_pipeline.config import default_config
 
-# COMMAND ----------
-# MAGIC %md
-# MAGIC ## Parameters
-
-# COMMAND ----------
-dbutils.widgets.text("source_path", "/Volumes/nimble_challenge/raw/files/electronics_dataset.xlsx")
-dbutils.widgets.text("catalog", "nimble_challenge")
-
-source_path = dbutils.widgets.get("source_path")
-import os
-os.environ["NIMBLE_CATALOG"] = dbutils.widgets.get("catalog")
 cfg = default_config()
 
 # COMMAND ----------

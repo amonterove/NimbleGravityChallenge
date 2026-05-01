@@ -16,27 +16,24 @@ dbutils.widgets.text(
     "/Volumes/nimble_challenge/raw/files/electronics_dataset.xlsx",
 )
 dbutils.widgets.text(
-    "extract_prompt_path",
-    "/Workspace/Repos/nimble/NimbleGravityChallenge/prompts/extract_v1.yaml",
-)
-dbutils.widgets.text(
-    "judge_prompt_path",
-    "/Workspace/Repos/nimble/NimbleGravityChallenge/prompts/judge_v1.yaml",
+    "repo_root",
+    "/Workspace/Users/amonterove@gmail.com/NimbleGravityChallenge",
 )
 
 catalog = dbutils.widgets.get("catalog")
 source_path = dbutils.widgets.get("source_path")
-extract_prompt_path = dbutils.widgets.get("extract_prompt_path")
-judge_prompt_path = dbutils.widgets.get("judge_prompt_path")
+repo_root = dbutils.widgets.get("repo_root")
 
 # COMMAND ----------
+COMMON = {"catalog": catalog, "repo_root": repo_root}
+
 STAGES = [
-    ("01_bronze_ingest", {"catalog": catalog, "source_path": source_path}),
-    ("02_silver_standardize", {"catalog": catalog}),
-    ("03_silver_llm_extract", {"catalog": catalog, "prompt_path": extract_prompt_path}),
-    ("04_silver_llm_judge", {"catalog": catalog, "prompt_path": judge_prompt_path}),
-    ("05_silver_taxonomy", {"catalog": catalog}),
-    ("06_gold_aggregate", {"catalog": catalog}),
+    ("01_bronze_ingest", {**COMMON, "source_path": source_path}),
+    ("02_silver_standardize", {**COMMON}),
+    ("03_silver_llm_extract", {**COMMON, "prompt_filename": "extract_v1.yaml"}),
+    ("04_silver_llm_judge", {**COMMON, "prompt_filename": "judge_v1.yaml"}),
+    ("05_silver_taxonomy", {**COMMON}),
+    ("06_gold_aggregate", {**COMMON}),
 ]
 
 for name, params in STAGES:

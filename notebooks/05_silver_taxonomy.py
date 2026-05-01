@@ -7,16 +7,30 @@
 # MAGIC failures stay in `products_manual_review` for human triage.
 
 # COMMAND ----------
-import os
+# MAGIC %md
+# MAGIC ## Parameters and module path setup
 
+# COMMAND ----------
+import os
+import sys
+
+dbutils.widgets.text("catalog", "nimble_challenge")
+dbutils.widgets.text(
+    "repo_root",
+    "/Workspace/Users/amonterove@gmail.com/NimbleGravityChallenge",
+)
+
+repo_root = dbutils.widgets.get("repo_root")
+sys.path.insert(0, f"{repo_root}/src")
+
+os.environ["NIMBLE_CATALOG"] = dbutils.widgets.get("catalog")
+
+# COMMAND ----------
 from delta.tables import DeltaTable
 from pyspark.sql import functions as F
 
 from nimble_pipeline.config import default_config
 
-# COMMAND ----------
-dbutils.widgets.text("catalog", "nimble_challenge")
-os.environ["NIMBLE_CATALOG"] = dbutils.widgets.get("catalog")
 cfg = default_config()
 
 # COMMAND ----------

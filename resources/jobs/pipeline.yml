@@ -11,6 +11,7 @@ resources:
             base_parameters:
               catalog: ${var.catalog}
               source_path: ${var.source_path}
+              repo_root: ${workspace.file_path}
 
         - task_key: silver_standardize
           depends_on:
@@ -19,6 +20,7 @@ resources:
             notebook_path: ../../notebooks/02_silver_standardize.py
             base_parameters:
               catalog: ${var.catalog}
+              repo_root: ${workspace.file_path}
 
         - task_key: silver_llm_extract
           depends_on:
@@ -27,7 +29,8 @@ resources:
             notebook_path: ../../notebooks/03_silver_llm_extract.py
             base_parameters:
               catalog: ${var.catalog}
-              prompt_path: ${workspace.file_path}/prompts/extract_v1.yaml
+              repo_root: ${workspace.file_path}
+              prompt_filename: extract_v1.yaml
 
         - task_key: silver_llm_judge
           depends_on:
@@ -36,7 +39,8 @@ resources:
             notebook_path: ../../notebooks/04_silver_llm_judge.py
             base_parameters:
               catalog: ${var.catalog}
-              prompt_path: ${workspace.file_path}/prompts/judge_v1.yaml
+              repo_root: ${workspace.file_path}
+              prompt_filename: judge_v1.yaml
 
         - task_key: silver_taxonomy
           depends_on:
@@ -45,6 +49,7 @@ resources:
             notebook_path: ../../notebooks/05_silver_taxonomy.py
             base_parameters:
               catalog: ${var.catalog}
+              repo_root: ${workspace.file_path}
 
         - task_key: gold_aggregate
           depends_on:
@@ -53,6 +58,7 @@ resources:
             notebook_path: ../../notebooks/06_gold_aggregate.py
             base_parameters:
               catalog: ${var.catalog}
+              repo_root: ${workspace.file_path}
 
       queue:
         enabled: true

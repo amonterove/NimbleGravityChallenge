@@ -15,6 +15,25 @@
 # MAGIC %restart_python
 
 # COMMAND ----------
+# MAGIC %md
+# MAGIC ## Parameters and module path setup
+
+# COMMAND ----------
+import os
+import sys
+
+dbutils.widgets.text("catalog", "nimble_challenge")
+dbutils.widgets.text(
+    "repo_root",
+    "/Workspace/Users/amonterove@gmail.com/NimbleGravityChallenge",
+)
+
+repo_root = dbutils.widgets.get("repo_root")
+sys.path.insert(0, f"{repo_root}/src")
+
+os.environ["NIMBLE_CATALOG"] = dbutils.widgets.get("catalog")
+
+# COMMAND ----------
 import hashlib
 
 from delta.tables import DeltaTable
@@ -28,10 +47,6 @@ from nimble_pipeline.parsers import (
     parse_weight_kg,
 )
 
-# COMMAND ----------
-dbutils.widgets.text("catalog", "nimble_challenge")
-import os
-os.environ["NIMBLE_CATALOG"] = dbutils.widgets.get("catalog")
 cfg = default_config()
 
 # COMMAND ----------

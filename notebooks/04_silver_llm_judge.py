@@ -15,8 +15,27 @@
 # MAGIC %restart_python
 
 # COMMAND ----------
-import os
+# MAGIC %md
+# MAGIC ## Parameters and module path setup
 
+# COMMAND ----------
+import os
+import sys
+
+dbutils.widgets.text("catalog", "nimble_challenge")
+dbutils.widgets.text(
+    "repo_root",
+    "/Workspace/Users/amonterove@gmail.com/NimbleGravityChallenge",
+)
+dbutils.widgets.text("prompt_filename", "judge_v1.yaml")
+dbutils.widgets.text("mlflow_experiment", "/Shared/nimble_challenge/llm_judge")
+
+repo_root = dbutils.widgets.get("repo_root")
+sys.path.insert(0, f"{repo_root}/src")
+
+os.environ["NIMBLE_CATALOG"] = dbutils.widgets.get("catalog")
+
+# COMMAND ----------
 import mlflow
 from delta.tables import DeltaTable
 from pyspark.sql import Row
@@ -25,14 +44,9 @@ from pyspark.sql import functions as F
 from nimble_pipeline.config import default_config
 from nimble_pipeline.llm import LLMClient, judge_extraction, load_prompt
 
-# COMMAND ----------
-dbutils.widgets.text("catalog", "nimble_challenge")
-dbutils.widgets.text("prompt_path", "/Workspace/Repos/nimble/NimbleGravityChallenge/prompts/judge_v1.yaml")
-dbutils.widgets.text("mlflow_experiment", "/Shared/nimble_challenge/llm_judge")
-
-os.environ["NIMBLE_CATALOG"] = dbutils.widgets.get("catalog")
 cfg = default_config()
-prompt = load_prompt(dbutils.widgets.get("prompt_path"))
+prompt_path = f"{repo_root}/prompts/{dbutils.widgets.get('prompt_filename')}"
+prompt = load_prompt(prompt_path)
 
 mlflow.set_experiment(dbutils.widgets.get("mlflow_experiment"))
 
