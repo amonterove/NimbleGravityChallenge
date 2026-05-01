@@ -112,10 +112,15 @@ All Bronze + Silver writes use `mergeSchema=true`. New columns added upstream
 
 ### 7. LLM provider: Databricks Foundation Model APIs (demo) — Anthropic Claude (recommended for production)
 
-**Demo implementation**: the workspace's built-in Foundation Models, default
-`databricks-meta-llama-3-3-70b-instruct`, via the OpenAI-compatible endpoint.
-**No external secret needed** on Databricks Free Edition — the notebook context
-provides `DATABRICKS_HOST` / `DATABRICKS_TOKEN`.
+**Demo implementation**: the workspace's built-in Foundation Models served
+through the **Unity AI Gateway**, default `databricks-gpt-oss-120b` (OpenAI's
+flagship open-weight model, 128K context, reasoning + tools enabled), via the
+OpenAI-compatible endpoint. **No external secret needed** on Databricks Free
+Edition — the notebook context provides `DATABRICKS_HOST` / `DATABRICKS_TOKEN`.
+The `model_name` widget makes it trivial to switch between any endpoint
+exposed in the workspace's AI Gateway (`databricks-gpt-oss-20b`,
+`databricks-gemma-3-12b`, `databricks-qwen3-next-80b-a3b-instruct`, etc.)
+without code changes.
 
 **Recommendation for production: Anthropic Claude** (Sonnet 4.6 / Haiku 4.5).
 The `LLMClient` already supports any OpenAI-compatible endpoint, so swapping

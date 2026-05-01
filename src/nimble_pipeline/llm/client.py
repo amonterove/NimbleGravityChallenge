@@ -19,7 +19,7 @@ from typing import Any
 
 import yaml
 
-DEFAULT_DATABRICKS_MODEL = "databricks-meta-llama-3-3-70b-instruct"
+DEFAULT_DATABRICKS_MODEL = "databricks-gpt-oss-120b"
 DEFAULT_OPENAI_MODEL = "gpt-4o-mini"
 
 

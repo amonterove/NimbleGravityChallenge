@@ -28,7 +28,7 @@ dbutils.widgets.text(
     "/Workspace/Users/amonterove@gmail.com/NimbleGravityChallenge",
 )
 dbutils.widgets.text("prompt_filename", "judge_v1.yaml")
-dbutils.widgets.text("model_name", "databricks-meta-llama-3-1-70b-instruct")
+dbutils.widgets.text("model_name", "databricks-gpt-oss-120b")
 
 # Default the MLflow experiment path under the running user's workspace home
 # so it works in Free Edition (which restricts /Shared paths) without setup.
