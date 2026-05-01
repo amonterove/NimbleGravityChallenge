@@ -40,7 +40,7 @@ _current_user = (
 )
 dbutils.widgets.text(
     "mlflow_experiment",
-    f"/Users/{_current_user}/nimble_challenge/llm_judge",
+    f"/Users/{_current_user}/nimble_challenge_llm_judge",
 )
 
 repo_root = dbutils.widgets.get("repo_root")
