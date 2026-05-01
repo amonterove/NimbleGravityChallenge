@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Databricks
+.databricks/
+.databricks-login.json
+
+# Secrets
+.env
+.env.local
+*.pem
+
+# MLflow local
+mlruns/
+mlartifacts/
+
+# Misc
+*.log
+tmp/
+
+# Office temp lockfiles
+~$*
+
+# Local IDE/tooling settings
+.claude/
+.cursor/
+.aider*

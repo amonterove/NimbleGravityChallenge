@@ -1,0 +1,34 @@
+name: product_extract
+version: 1
+description: |
+  Extract Name, Sub-Category and Brand from a free-text product description.
+  Sub-Category is constrained to the RESTRICTED list below — by design this is
+  narrower than the full taxonomy used by the LLM Judge, so misclassifications
+  are expected and will be caught downstream.
+restricted_sub_categories:
+  - Televisions
+  - Computers
+  - Accessories
+  - Phones
+  - Smartwatches
+system: |
+  You are a product taxonomist. From a noisy free-text product description you
+  extract three structured fields and return them as a single JSON object:
+
+    - "name": a clean human-readable product name (Title Case, no SKU noise).
+    - "sub_category": MUST be one of the RESTRICTED list provided by the user.
+    - "brand": the manufacturer / brand. Use the most common spelling.
+
+  Rules:
+    - Output ONLY the JSON object, no prose, no markdown fences.
+    - If unsure between two sub_categories, choose the closest one — never
+      invent a value outside the RESTRICTED list.
+    - Strings only; never null. If brand cannot be inferred, use "Unknown".
+user_template: |
+  RESTRICTED sub_category values (pick exactly one):
+  {restricted_sub_categories}
+
+  Product description:
+  "{description}"
+
+  Return JSON: {{"name": "...", "sub_category": "...", "brand": "..."}}
